@@ -8,7 +8,6 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class StartGambleLogic {
 
-
     //Hier vanuit messagebroker opvragen hoeveel saldo de user heeft
     private boolean canGamble(double credit){
         return credit > 0;
@@ -19,6 +18,7 @@ public class StartGambleLogic {
             return "Not enough credit";
         }
 
+        //opslaan db
         return new Gson().toJson(bet);
     }
 }

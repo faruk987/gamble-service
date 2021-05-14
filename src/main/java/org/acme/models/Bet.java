@@ -2,15 +2,13 @@ package org.acme.models;
 
 public class Bet {
     int eventId;
-    int home;
-    int away;
+    int prediction;
     double quotation;
     int inlay;
 
-    public Bet(int eventId, int home, int away, double quotation, int inlay) {
+    public Bet(int eventId, int prediction, double quotation, int inlay) {
         this.eventId = eventId;
-        this.home = home;
-        this.away = away;
+        this.prediction = prediction;
         this.quotation = quotation;
         this.inlay = inlay;
     }
@@ -22,18 +20,11 @@ public class Bet {
         this.eventId = eventId;
     }
 
-    public int getHome() {
-        return home;
+    public int getPrediction() {
+        return prediction;
     }
-    public void setHome(int home) {
-        this.home = home;
-    }
-
-    public int getAway() {
-        return away;
-    }
-    public void setAway(int away) {
-        this.away = away;
+    public void setPrediction(int prediction) {
+        this.prediction = prediction;
     }
 
     public double getQuotation() {
