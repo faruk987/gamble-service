@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.acme.logic.GambleResultLogic;
 import org.acme.logic.StartGambleLogic;
 import org.acme.models.Bet;
+import org.mvel2.ast.ReturnNode;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -11,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.lang.annotation.Retention;
 
 @Path("/gamble")
 public class GambleController {
@@ -27,8 +29,10 @@ public class GambleController {
                            @QueryParam("inlay") int inlay) {
         //hier controleren of user al op deze eventid heeft gegokt.
 
-        Bet bet = new Bet(eventId,prediction,quatation,inlay);
-        return startLogic.placeBet(4, bet);
+        Bet bet = new Bet(eventId,prediction,quatation,inlay,"user");
+        startLogic.placeBet(bet);
+
+        return "Ok";
     }
 
     @GET
@@ -38,7 +42,7 @@ public class GambleController {
                             @QueryParam("home") int home,
                            @QueryParam("away") int away){
         //hier bet ophalen van user
-        Bet bet = new Bet(1,1,1.9,660);
+        Bet bet = new Bet(1,1,1.9,660,"user");
         resultLogic.calculatedWinLos(home,away,bet);
         return "Ok";
     }

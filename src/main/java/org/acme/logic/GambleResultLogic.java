@@ -35,13 +35,13 @@ public class GambleResultLogic {
     Emitter<String> priceEmitter;
     //Met message broker result toevoegen/afschrijven van saldo gebruiker
     public void calculatedWinLos(int home, int away, Bet bet){
-        BetResult betResult = new BetResult(1,"me@me.com",0);
+        BetResult betResult = new BetResult(1,"user",0);
         if (hasWon(home,away,bet)){
             betResult.setResult((bet.getInlay() * bet.getQuotation()));
             String json = Json.encode(betResult);
             priceEmitter.send(json);
         }else {
-            betResult.setResult(-bet.getInlay());
+            betResult.setResult(0);
             String json = Json.encode(betResult);
             priceEmitter.send(json);
         }

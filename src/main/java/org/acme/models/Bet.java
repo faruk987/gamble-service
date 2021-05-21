@@ -1,17 +1,21 @@
 package org.acme.models;
 
 public class Bet {
-    private int userId;
+    private String username;
     private int eventId;
     private int prediction;
     private double quotation;
     private int inlay;
 
-    public Bet(int eventId, int prediction, double quotation, int inlay) {
+    public Bet() {
+    }
+
+    public Bet(int eventId, int prediction, double quotation, int inlay, String username) {
         this.eventId = eventId;
         this.prediction = prediction;
         this.quotation = quotation;
         this.inlay = inlay;
+        this.username = username;
     }
 
     public int getEventId() {
@@ -40,5 +44,12 @@ public class Bet {
     }
     public void setInlay(int inlay) {
         this.inlay = inlay;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

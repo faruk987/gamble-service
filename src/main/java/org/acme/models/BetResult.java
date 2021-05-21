@@ -2,12 +2,12 @@ package org.acme.models;
 
 public class BetResult {
     private int betId;
-    private String userEmail;
+    private String username;
     private double result;
 
-    public BetResult(int betId, String userEmail, double result) {
+    public BetResult(int betId, String username, double result) {
         this.betId = betId;
-        this.userEmail = userEmail;
+        this.username = username;
         this.result = result;
     }
 
@@ -19,12 +19,12 @@ public class BetResult {
         this.betId = betId;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public double getResult() {
