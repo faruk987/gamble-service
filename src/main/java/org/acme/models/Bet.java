@@ -1,10 +1,11 @@
 package org.acme.models;
 
 public class Bet {
-    int eventId;
-    int prediction;
-    double quotation;
-    int inlay;
+    private int userId;
+    private int eventId;
+    private int prediction;
+    private double quotation;
+    private int inlay;
 
     public Bet(int eventId, int prediction, double quotation, int inlay) {
         this.eventId = eventId;

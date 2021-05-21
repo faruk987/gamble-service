@@ -1,8 +1,16 @@
 package org.acme.logic;
 
+import io.vertx.core.json.Json;
 import org.acme.models.Bet;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+import org.acme.models.BetResult;
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
+
 
 @ApplicationScoped
 public class GambleResultLogic {
@@ -22,12 +30,20 @@ public class GambleResultLogic {
         }
     }
 
+    @Inject
+    @Channel("gamble-results")
+    Emitter<String> priceEmitter;
     //Met message broker result toevoegen/afschrijven van saldo gebruiker
-    public double calculatedWinLos(int home, int away, Bet bet){
+    public void calculatedWinLos(int home, int away, Bet bet){
+        BetResult betResult = new BetResult(1,"me@me.com",0);
         if (hasWon(home,away,bet)){
-            return bet.getInlay() * bet.getQuotation();
+            betResult.setResult((bet.getInlay() * bet.getQuotation()));
+            String json = Json.encode(betResult);
+            priceEmitter.send(json);
         }else {
-            return -bet.getInlay();
+            betResult.setResult(-bet.getInlay());
+            String json = Json.encode(betResult);
+            priceEmitter.send(json);
         }
     }
 

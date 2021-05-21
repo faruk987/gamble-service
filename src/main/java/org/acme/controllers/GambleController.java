@@ -25,6 +25,7 @@ public class GambleController {
                            @QueryParam("prediction") int prediction,
                            @QueryParam("quatation") double quatation,
                            @QueryParam("inlay") int inlay) {
+        //hier controleren of user al op deze eventid heeft gegokt.
 
         Bet bet = new Bet(eventId,prediction,quatation,inlay);
         return startLogic.placeBet(4, bet);
@@ -33,11 +34,12 @@ public class GambleController {
     @GET
     @Path("/result")
     @Produces(MediaType.TEXT_PLAIN)
-    public double getResult(@QueryParam("eventId") int eventId,
+    public String getResult(@QueryParam("eventId") int eventId,
                             @QueryParam("home") int home,
                            @QueryParam("away") int away){
         //hier bet ophalen van user
-        Bet bet = new Bet(1,1,1.6,100);
-        return resultLogic.calculatedWinLos(home,away,bet);
+        Bet bet = new Bet(1,1,1.9,660);
+        resultLogic.calculatedWinLos(home,away,bet);
+        return "Ok";
     }
 }
