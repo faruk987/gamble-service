@@ -26,14 +26,23 @@ public class StartGambleLogic {
         userEmitter.send(bet.getUsername());
     }
 
+    @Inject
+    @Channel("send-inlay")
+    Emitter<String> inlayEmitter;
+
     @Incoming("wallet")
     public void processResponse(Object result){
         String jsonvalue = Json.decodeValue((String) result).toString();
         UserWallet userWallet = Json.decodeValue(jsonvalue, UserWallet.class);
 
-        if (userWallet.getWallet() >= 0 && userWallet.getWallet() > currentBet.getInlay()){
-            //hier de bet aanmaken en opslaan
-            //ook message sturen naar user om het inzet van zijn wallet af te halen
+        if (userWallet.getWallet() > currentBet.getInlay()){
+            userWallet.setWallet(currentBet.getInlay());
+
+            String json = Json.encode(userWallet);
+            inlayEmitter.send(json);
+
+            //hier de bet aanmaken en opslaan DB
+
             System.out.println("Er kan gegokt worden");
         }
     }

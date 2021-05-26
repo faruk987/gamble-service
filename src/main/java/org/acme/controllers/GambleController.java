@@ -21,6 +21,7 @@ public class GambleController {
     @Inject
     GambleResultLogic resultLogic;
 
+    //post van maken
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String placeBet(@QueryParam("eventId") int eventId,
@@ -42,7 +43,7 @@ public class GambleController {
                             @QueryParam("home") int home,
                            @QueryParam("away") int away){
         //hier bet ophalen van user
-        Bet bet = new Bet(1,1,1.9,660,"user");
+        Bet bet = new Bet(1,1,1.7,100,"user");
         resultLogic.calculatedWinLos(home,away,bet);
         return "Ok";
     }

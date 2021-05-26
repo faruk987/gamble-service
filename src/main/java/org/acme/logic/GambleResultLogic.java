@@ -7,6 +7,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import org.acme.models.BetResult;
+import org.acme.models.PredictionType;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
@@ -14,20 +15,23 @@ import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
 @ApplicationScoped
 public class GambleResultLogic {
-    private final int WIN = 1;
-    private final int LOSE = 2;
-    private final int DRAW = 3;
 
     private boolean hasWon(int home, int away, Bet bet){
-        if (home > away && bet.getPrediction() == WIN){
-            return true;
-        }else if (home < away && bet.getPrediction() == LOSE){
-            return true;
-        }else if (home == away && bet.getPrediction() == DRAW){
-            return true;
-        }else {
-            return false;
+        switch(bet.getPredictionType()) {
+            case WIN:
+                if (home > away) return true;
+                break;
+            case LOSE:
+                if (home < away) return true;
+                break;
+            case DRAW:
+                if (home == away) return true;
+                break;
+            default:
+                throw new IllegalArgumentException("This prediction type is not accepted.");
         }
+
+        return false;
     }
 
     @Inject
@@ -38,13 +42,12 @@ public class GambleResultLogic {
         BetResult betResult = new BetResult(1,"user",0);
         if (hasWon(home,away,bet)){
             betResult.setResult((bet.getInlay() * bet.getQuotation()));
-            String json = Json.encode(betResult);
-            priceEmitter.send(json);
         }else {
             betResult.setResult(0);
-            String json = Json.encode(betResult);
-            priceEmitter.send(json);
         }
+        
+        String json = Json.encode(betResult);
+        priceEmitter.send(json);
     }
 
 }
