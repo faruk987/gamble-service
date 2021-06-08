@@ -22,6 +22,7 @@ public class Bet {
             case 2: this.predictionType = PredictionType.LOSE;
             break;
             case 3: this.predictionType = PredictionType.DRAW;
+            break;
             default:
                 throw new IllegalArgumentException("Prediction type not accepted");
         }
