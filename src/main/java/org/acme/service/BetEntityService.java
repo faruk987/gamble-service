@@ -5,6 +5,7 @@ import org.acme.models.Bet;
 import org.acme.models.PredictionType;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.time.LocalDateTime;
 
 @ApplicationScoped
 public class BetEntityService {
@@ -31,11 +32,15 @@ public class BetEntityService {
         betEntity.setInlay(bet.getInlay());
         betEntity.setPredictionType(prediction);
         betEntity.setQuotation(bet.getQuotation());
+        betEntity.setCreatedon(LocalDateTime.now());
         betEntity.setResult(0);
         betEntity.persist();
     }
 
-    public void updateBetResult(BetEntity betEntity,  double result){
+    public void updateBetResult(long id,  double result){
+        System.out.println(id);
+        BetEntity betEntity = BetEntity.findById(id);
+        System.out.println(betEntity.getUsername());;
         betEntity.setResult(result);
         betEntity.persist();
     }

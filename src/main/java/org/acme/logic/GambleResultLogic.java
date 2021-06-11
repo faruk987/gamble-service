@@ -6,6 +6,7 @@ import org.acme.models.Bet;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.acme.models.BetResult;
 import org.acme.models.PredictionType;
@@ -38,10 +39,12 @@ public class GambleResultLogic {
         return false;
     }
 
+
     @Inject
     @Channel("gamble-results")
     Emitter<String> priceEmitter;
     //Met message broker result toevoegen/afschrijven van saldo gebruiker
+    @Transactional
     public void calculatedWinLos(int home, int away, BetEntity bet){
         BetResult betResult = new BetResult(Math.toIntExact(bet.id),bet.getUsername(),0);
         if (hasWon(home,away,bet.getBet())){
@@ -52,6 +55,8 @@ public class GambleResultLogic {
 
         String json = Json.encode(betResult);
         priceEmitter.send(json);
+
+        betEntityService.updateBetResult(bet.id, betResult.getResult());
     }
 
 }

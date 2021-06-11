@@ -1,11 +1,10 @@
 package org.acme.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import org.acme.models.Bet;
 
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -16,6 +15,7 @@ public class BetEntity extends PanacheEntity {
     private double quotation;
     private int inlay;
     private double result;
+    private LocalDateTime createdon;
 
     public String getUsername() {
         return username;
@@ -59,9 +59,17 @@ public class BetEntity extends PanacheEntity {
         this.result = result;
     }
 
+    public LocalDateTime getCreatedon() {
+        return createdon;
+    }
+    public void setCreatedon(LocalDateTime createdon) {
+        this.createdon = createdon;
+    }
+
     public Bet getBet(){
         return new Bet(eventId, predictionType,quotation,inlay,username);
     }
+
     public static BetEntity findByUserAndEventId(String username, int eventId){
         List<BetEntity> betEntities = list("username", username);
 
@@ -75,4 +83,8 @@ public class BetEntity extends PanacheEntity {
 
         return result;
     }
+
+  /*  public static List<BetEntity> findByName(String username){
+        return (List<BetEntity>) find("username", username);
+    }*/
 }

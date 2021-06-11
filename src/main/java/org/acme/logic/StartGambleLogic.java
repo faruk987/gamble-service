@@ -48,7 +48,7 @@ public class StartGambleLogic {
             String json = Json.encode(userWallet);
             inlayEmitter.send(json);
 
-          //  betEntityService.storeBet(currentBet);
+            betEntityService.storeBet(currentBet);
         }
     }
 }
