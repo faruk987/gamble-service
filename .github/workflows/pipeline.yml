@@ -32,7 +32,7 @@ jobs:
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
         image: farukaydin7/gamble-service
-        targets: latest
+        tags: latest
         registry: docker.io
         dockerfile: src/main/docker/Dockerfile.jvm
         username: ${{ secrets.DOCKER_USERNAME }}
