@@ -3,7 +3,7 @@ package org.acme.models;
 public class Bet {
     private String username;
     private int eventId;
-    private int prediction;
+    private PredictionType predictionType;
     private double quotation;
     private int inlay;
 
@@ -12,10 +12,20 @@ public class Bet {
 
     public Bet(int eventId, int prediction, double quotation, int inlay, String username) {
         this.eventId = eventId;
-        this.prediction = prediction;
         this.quotation = quotation;
         this.inlay = inlay;
         this.username = username;
+
+        switch (prediction){
+            case 1: this.predictionType = PredictionType.WIN;
+            break;
+            case 2: this.predictionType = PredictionType.LOSE;
+            break;
+            case 3: this.predictionType = PredictionType.DRAW;
+            break;
+            default:
+                throw new IllegalArgumentException("Prediction type not accepted");
+        }
     }
 
     public int getEventId() {
@@ -23,13 +33,6 @@ public class Bet {
     }
     public void setEventId(int eventId) {
         this.eventId = eventId;
-    }
-
-    public int getPrediction() {
-        return prediction;
-    }
-    public void setPrediction(int prediction) {
-        this.prediction = prediction;
     }
 
     public double getQuotation() {
@@ -51,5 +54,13 @@ public class Bet {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public PredictionType getPredictionType() {
+        return predictionType;
+    }
+
+    public void setPredictionType(PredictionType predictionType) {
+        this.predictionType = predictionType;
     }
 }
