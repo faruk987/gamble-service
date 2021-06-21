@@ -6,12 +6,14 @@ import org.acme.logic.GambleResultLogic;
 import org.acme.logic.StartGambleLogic;
 import org.acme.models.Bet;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Random;
 
 @Path("/gamble")
 public class GambleController {
@@ -21,15 +23,9 @@ public class GambleController {
     @Inject
     GambleResultLogic resultLogic;
 
-/*    @GET
-    @Path("/test")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String test(){
-        return jwt.getName();
-    }*/
-
 
     @POST
+    @RolesAllowed({"User","Admin"})
     @Produces(MediaType.TEXT_PLAIN)
     public Response.Status placeBet(@QueryParam("eventId") int eventId,
                                     @QueryParam("prediction") int prediction,
@@ -46,14 +42,15 @@ public class GambleController {
 
     @GET
     @Path("/result")
+    @RolesAllowed({"User","Admin"})
     @Produces(MediaType.TEXT_PLAIN)
-    public String getResult(@QueryParam("id") int betId,
-                            @QueryParam("home") int home,
-                            @QueryParam("away") int away){
-        //hier bet ophalen van user
+    public String getResult(@QueryParam("id") int betId){
+        Random home = new Random();
+        Random away = new Random();
+
         BetEntity bet = BetEntity.findById((long)betId);
         if (bet != null) {
-            resultLogic.calculatedWinLos(home,away,bet);
+            resultLogic.calculatedWinLos(home.nextInt(6),away.nextInt(6),bet);
 
             return new Gson().toJson(bet);
         }
@@ -61,6 +58,7 @@ public class GambleController {
     }
 
     @GET
+    @RolesAllowed({"User","Admin"})
     @Path("/all")
     @Produces(MediaType.TEXT_PLAIN)
     public String getAll(@QueryParam("user") String user){
@@ -72,9 +70,10 @@ public class GambleController {
 
     @DELETE
     @Path("/all")
+    @RolesAllowed({"User","Admin"})
     @Transactional
     @Produces(MediaType.TEXT_PLAIN)
-    public void deleteAllBetsBySender(@QueryParam("user") String user) {
-        BetEntity.delete("sender", user);
+    public void deleteAllBetsBySender(@QueryParam("username") String user) {
+        BetEntity.delete("username", user);
     }
 }

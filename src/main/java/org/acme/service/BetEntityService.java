@@ -1,14 +1,20 @@
 package org.acme.service;
 
 import org.acme.entity.BetEntity;
+import org.acme.logic.GambleResultLogic;
 import org.acme.models.Bet;
 import org.acme.models.PredictionType;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
+import java.util.Random;
 
 @ApplicationScoped
 public class BetEntityService {
+    @Inject
+    GambleResultLogic resultLogic;
+
     public void storeBet(Bet bet){
         int prediction;
 
@@ -35,6 +41,10 @@ public class BetEntityService {
         betEntity.setCreatedon(LocalDateTime.now());
         betEntity.setResult(0);
         betEntity.persist();
+
+        Random home = new Random();
+        Random away = new Random();
+        resultLogic.calculatedWinLos(1,0,betEntity);
     }
 
     public void updateBetResult(long id,  double result){
@@ -43,9 +53,5 @@ public class BetEntityService {
         System.out.println(betEntity.getUsername());;
         betEntity.setResult(result);
         betEntity.persist();
-    }
-
-    public void getBetByUserAndEvent(){
-
     }
 }
